@@ -11,7 +11,7 @@ def main(page: ft.Page):
     page.window.height = 700
     page.window.resizable = False
     bot = ChatBot()
-    messages = ft.Column(scroll=ft.ScrollMode.ALWAYS, expand=True, spacing=10)
+    messages = ft.Column(scroll=ft.ScrollMode.AUTO, expand=True, spacing=10, auto_scroll=True)
 
     def add_message(sender, text):
         bg_color = ft.Colors.BLUE_GREY_800 if sender == "Bot" else ft.Colors.BLUE_700
