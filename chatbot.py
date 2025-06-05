@@ -1,18 +1,16 @@
 import pandas as pd
-import os
+
+from CONSTANTS import USER_QUESTIONS, QUESTIONS
 
 
 class ChatBot:
     def __init__(self, filename="conversatie.xlsx"):
         self.filename = filename
         self.history = []
-        self.questions = [
-            "Salut! Cum te numești?",
-            "Cu ce te ocupi?",
-            "Ce te interesează cel mai mult acum?"
-        ]
+        self.questions = QUESTIONS
         self.answers = []
         self.current_question = 0
+        self.user_questions = USER_QUESTIONS
 
     def add_to_history(self, sender, message):
         self.history.append({"from": sender, "message": message})
@@ -35,14 +33,29 @@ class ChatBot:
             return question
         return None
 
+    def check_for_known_question(self, user_input):
+        user_input = user_input.lower()
+        for key, value in self.user_questions.items():
+            if key in user_input:
+                return value
+        return None
+
     def process_input(self, user_input):
         self.add_to_history("User", user_input)
+
+        known_answer = self.check_for_known_question(user_input)
+        if known_answer:
+            self.add_to_history("Bot", known_answer)
+            return known_answer
+
         if self.current_question <= len(self.questions):
             self.answers.append(user_input)
-        next_questions = self.get_next_question()
-        if next_questions:
-            self.add_to_history("Bot", next_questions)
-            return next_questions
+
+        next_question = self.get_next_question()
+        if next_question:
+            self.add_to_history("Bot", next_question)
+            return next_question
+
         response = self.generate_response()
         self.add_to_history("Bot", response)
         return response

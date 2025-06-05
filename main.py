@@ -9,6 +9,7 @@ def main(page: ft.Page):
     page.theme_mode = 'dark'
     page.window.width = 350
     page.window.height = 700
+    page.window.resizable = False
     bot = ChatBot()
     messages = ft.Column(scroll=ft.ScrollMode.ALWAYS, expand=True, spacing=10)
 
